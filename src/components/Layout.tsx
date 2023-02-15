@@ -2,11 +2,15 @@ import { FC } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 
-function Layout({ ChildComponent }: { ChildComponent: FC<{}> }) {
+type Props = {
+    children: JSX.Element
+  }
+
+function Layout({children} : Props) {
     return (  
         <>
             <Header/>
-            <ChildComponent />
+            {children}
             <Footer/>
         </>
     );

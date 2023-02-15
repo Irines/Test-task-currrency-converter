@@ -6,7 +6,9 @@ import MainPage from './containers/MainPage';
 
 function App() {
   return (
-    <Layout ChildComponent={MainPage} />
+    <Layout>
+      <MainPage/>
+    </Layout>
   );
 }
 
