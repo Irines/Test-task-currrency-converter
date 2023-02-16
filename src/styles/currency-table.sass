@@ -16,7 +16,7 @@
             align-content: center
             align-items: center
             justify-content: space-between
-            border-bottom: 1px solid rgb(240, 245, 250)
+            border-bottom: 1px solid $line-color
         .table-header
             height: 58px
             border-radius: 8px
@@ -46,26 +46,41 @@
                 justify-content: space-around
                 position: relative
                 .MuiFormControl-root 
+                    border-radius: 4px
                     .MuiInputBase-root 
+                        border-radius: 4px
                         input
                             text-align: center
-                            &:hover fieldset
-                                border: 1px solid grey
-                            
+                            border-radius: 4px         
                             &:hover
-                                background-color: $lighter-blue
+                                background-color: $light-grey
                 .icon
-                    display: none
+                    display: unset
+                    cursor: pointer
+                    height: 16px
+                    width: 16px
+                    position: absolute
+                    top: 0px
+                    right: 0px
+                .helpIcons
+                    display: flex
+                    cursor: pointer
+                    height: 16px
+                    width: 16px
+                    position: absolute
+                    top: 0px
+                    right: 0px
+                    z-index: 2
                 &:hover
                     // background-color: $lighter-blue
                     .icon
-                        display: unset
-                        cursor: pointer
-                        height: 16px
-                        width: 16px
-                        position: absolute
-                        top: 0px
-                        right: 0px
+                        // display: unset
+                        // cursor: pointer
+                        // height: 16px
+                        // width: 16px
+                        // position: absolute
+                        // top: 0px
+                        // right: 0px
         .cell.currency-col
             padding: 0px
             div

@@ -1,8 +1,12 @@
 import "../styles/currency-table.sass"
-import {ReactComponent as EditIcon} from "../assets/images/edit.svg";
-import { TextField } from "@mui/material";
+import {useState} from 'react';
+import TableRow from "./TableRow";
+
 
 function CurrencyTable() {
+    const [data, editData] = useState(
+        [{"ccy":"EUR","base_ccy":"UAH","buy":"41.15000","sale":"42.15000"},{"ccy":"USD","base_ccy":"UAH","buy":"39.10000","sale":"39.60000"}]
+    )
     return (  
         <div className="table-container">
             <div className="table">
@@ -14,38 +18,12 @@ function CurrencyTable() {
                     </div>
                 </div>
                 <div className="table-body">
-                <div className="row">
-                    <div className="cell currency-col"><div>EUR/UAH</div></div>
-                    <div className="cell">
-                        <div className="cell__content">
-                            {/* <p>27.5</p> */}
-                            <TextField
-                                fullWidth 
-                                id="outlined-name"
-                                // label="Name"
-                                value={27.7}
-                                // onChange={handleChange}
-                            />
-                            <EditIcon className="icon"/>
-                        </div>
-                    </div>
-                    <div className="cell">
-                        <div className="cell__content">
-                            <TextField
-                                fullWidth 
-                                id="outlined-name"
-                                // label="Name"
-                                value={27.7}
-                                // onChange={handleChange}
-                                sx={{border: 'none', "& fieldset": { border: 'none' }, }}
-                                // InputProps={{
-                                //         disableUnderline: true,
-                                // }}
-                            />
-                            <EditIcon className="icon"/>
-                        </div>
-                    </div>
-                </div>
+                    {
+                        data.map((value, index) => (
+                            console.log("DATA", data),
+                            <TableRow value={value} key={`row_${index}`}/>
+                        ))
+                    }
                 </div>
             </div>
         </div>
