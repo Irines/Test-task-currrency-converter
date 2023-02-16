@@ -4,7 +4,7 @@ import Header from "./Header";
 
 type Props = {
     children: JSX.Element
-  }
+}
 
 function Layout({children} : Props) {
     return (  

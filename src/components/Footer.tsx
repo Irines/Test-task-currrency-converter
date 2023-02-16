@@ -1,6 +1,10 @@
+import "../styles/footer.sass"
 function Footer() {
+    const year = new Date().getFullYear();
     return (
-        <div>Footer</div>
+        <footer>
+            <p>{`${year} All rights reserved`}</p>
+        </footer>
     );
 }
 
