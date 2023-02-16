@@ -32,6 +32,10 @@
         .cell
             width: 33%
             padding: 16px 0px
+            display: flex
+            align-content: center
+            align-items: center
+            justify-content: center
             &__content      
                 border-radius: 8px
                 text-align: center
@@ -41,10 +45,19 @@
                 align-items: center
                 justify-content: space-around
                 position: relative
+                .MuiFormControl-root 
+                    .MuiInputBase-root 
+                        input
+                            text-align: center
+                            &:hover fieldset
+                                border: 1px solid grey
+                            
+                            &:hover
+                                background-color: $lighter-blue
                 .icon
                     display: none
                 &:hover
-                    background-color: $lighter-blue
+                    // background-color: $lighter-blue
                     .icon
                         display: unset
                         cursor: pointer
@@ -64,6 +77,6 @@
                 align-items: center
                 justify-content: space-around
                 &:hover
-                    background-color: $lighter-blue
+                    // background-color: $lighter-blue
 
 
