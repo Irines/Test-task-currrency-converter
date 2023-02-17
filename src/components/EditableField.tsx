@@ -22,14 +22,17 @@ function EditableField({value} : FieldProps) {
         }, [value]);
 
         const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-            console.log("handelChange")
             const newVal = (e.target.value)
-            if (Number(newVal) < Number(initialValue)*1.1 && Number(newVal) > Number(initialValue) * 0.9 ) {
+            validateInput(Number(newVal))
+            setFieldValue(newVal)
+        }
+
+        const validateInput = (newVal: number) => {
+            if (newVal < Number(initialValue)*1.1 && newVal > Number(initialValue) * 0.9 ) {
                 setValid(true)
             } else {
                 setValid(false)
             }
-            setFieldValue(newVal)
         }
 
         const handleReset = () => {
@@ -45,6 +48,11 @@ function EditableField({value} : FieldProps) {
             setShowEdit(false)
         }
 
+        const handleFieldClick = () => {
+            setShowEdit(false)
+            setShowIcons(true)
+        }
+
     return (  
         <>
             {
@@ -57,7 +65,7 @@ function EditableField({value} : FieldProps) {
                     autoComplete='off'
                     value={fieldValue}
                     onChange={handleChange}
-                    onClick={e => setShowIcons(true)}
+                    onClick={handleFieldClick}
                     onMouseEnter={e => setShowEdit(!showIcons)}
                     onMouseLeave={e => setShowEdit(false)}
                     sx={{
