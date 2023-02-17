@@ -6,7 +6,7 @@ import axios from "axios";
 const currencyData = [
   { ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
   { ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
-  { ccy: "USD", base_ccy: "EUR", buy: "0.9328", sale: "0.9488" },
+  { ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" }
 ];
 
 function CurrencyTable() {

@@ -2,13 +2,8 @@ import TextField from "@mui/material/TextField";
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import './../styles/converter.sass';
 import MenuItem from "@mui/material/MenuItem";
-import { ChangeEvent, useState } from "react";
-
-const currencyData = [
-    { ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
-    { ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
-    { ccy: "USD", base_ccy: "EUR", buy: "0.9328", sale: "0.9488" },
-];
+import { ChangeEvent, useEffect, useState } from "react";
+import axios from "axios";
 
 const currencies = [
     {
@@ -26,29 +21,57 @@ const currencies = [
     {
       value: 'BTC',
       label: '฿',
-    },
-    // {
-    //   value: 'JPY',
-    //   label: '¥',
-    // },
-  ];
+    }
+];
+
+interface currencyObj { 
+    ccy: string; 
+    base_ccy: string; 
+    buy: string; 
+    sale: string; 
+}
+
+const currencyData: currencyObj[] = [
+    { ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
+    { ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
+    { ccy: "UAH", base_ccy: "UAH", buy: "1", sale: "1" },
+    { ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" }
+];
 
 function Converter() {
-    const [changeValue, setChangeValue] = useState<number | string>('')
-    const [getValue, setGetValue] = useState<number | string>('')
+    const [amountValue, setAmountValue] = useState<string>('0')
+    const [getValue, setGetValue] = useState<string>('0')
     const [currency, setCurrency] = useState('EUR')
     const [getCurrency, setGetCurrency] = useState('USD')
+    const [isValid, setValid] = useState(true)
 
     const handleReverseCurrency = () => {
-        setChangeValue(getValue)
-        setGetValue(changeValue)
+        setAmountValue(getValue)
+        setGetValue(amountValue)
         setCurrency(getCurrency)
         setGetCurrency(currency)
     }
 
+    useEffect(() => {
+        if (isValid) {
+            let val = parseFloat(amountValue.replace(/,/g, '.'));
+            convertCurrency(currency, getCurrency, Number(val))
+        }
+    }, [currency, amountValue, getCurrency])
+
+    const convertCurrency = (currency: string, getCurrency: string, amount: number) => {
+        let computedValue = 0
+        if (currency === getCurrency) {
+            computedValue = amount
+        } else {
+            computedValue = amount * Number(currencyData.filter(value => value.ccy === currency)[0].buy)/ Number(currencyData.filter(value => value.ccy === getCurrency)[0].sale)
+        }
+        setGetValue(String(computedValue.toFixed(5)))
+    }
+
     const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>): void => {
         const newVal = (e.target.value)
-        setChangeValue(newVal)
+        setAmountValue(validation(newVal))
     }
 
     const handleChangeGet = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -66,33 +89,39 @@ function Converter() {
         setGetCurrency(newVal)
     }
 
-    // const toNumber = (value: string | number) => {
-    //     if (typeof value === 'number') return value
-    //     return parseInt(value.replace(/[^\d]+/g, ''))
-    // }
-    
-    // const formatPrice = (price: string | number) => {
-    //   return new Intl.NumberFormat('es-PY').format(toNumber(price))
-    // }
+    const validation = (value: string) => {
+        if (typeof value === 'string' && value.trim() === '') return ''
+        if (/^\d+[\.\,]?\d*$/.test(value)) {
+            setValid(true)
+        } else {
+            setValid(false)
+        }
+        return value
+    }
 
     return ( 
         <div className="converter-container">
             <div className="change input">
-                <TextField 
-                    id="outlined-name"
-                    label="Change"
-                    autoComplete='off'
-                    value={changeValue}
-                    onChange={handleChangeAmount}
-                    // onBlur={e => {
-                    //     const numberValue = toNumber(e.target.value)
-                    //     setChangeValue(numberValue)
-                    //     e.target.value = formatPrice(numberValue)
-                    // }}
-                    // onClick={handleFieldClick}
-                    // onMouseEnter={e => setShowEdit(!showIcons)}
-                    // onMouseLeave={e => setShowEdit(false)}
-                />
+                {
+                    isValid
+                    ?
+                        <TextField 
+                            id="outlined-name"
+                            label="Change"
+                            autoComplete='off'
+                            value={amountValue}
+                            onChange={handleChangeAmount}
+                        />
+                    :
+                        <TextField 
+                            error
+                            label="Enter only numbers and comma/dot"
+                            id="outlined-name"
+                            autoComplete='off'
+                            value={amountValue}
+                            onChange={handleChangeAmount}
+                        />
+                }
                 <TextField
                     id="outlined-select-currency"
                     select
@@ -115,12 +144,10 @@ function Converter() {
                 <TextField
                     id="outlined-name"
                     label="Get"
+                    disabled
                     autoComplete='off'
                     value={getValue}
                     onChange={handleChangeGet}
-                    // onClick={handleFieldClick}
-                    // onMouseEnter={e => setShowEdit(!showIcons)}
-                    // onMouseLeave={e => setShowEdit(false)}
                 />
                 <TextField
                     id="outlined-select-currency"
