@@ -1,26 +1,33 @@
 import "../styles/currency-table.sass";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import TableRow from "../components/TableRow";
 import axios from "axios";
+import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
+import { CurrencyContext } from "../data-context";
 
-const currencyData = [
-  { ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
-  { ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
-  { ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" }
+const currencyArr = [
+  { id:"1", ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
+  { id:"2", ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
+  { id:"3", ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" },
+  { id:"#", ccy: "UAH", base_ccy: "UAH", buy: "1", sale: "1" },
 ];
 
 function CurrencyTable() {
-  const [data, setData] = useState<
-    { ccy: string; base_ccy: string; buy: string; sale: string }[]
-  >([]);
+  const [data, setData] = useState<CurrencyObj[]>([]);
+  const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
 
+  // the server doesn't have CORS header, so you are not allowed to get the response
   const fetchPost = async () => {
-    // the server doesn't have CORS header, so you are not allowed to get the response
-    // const response = await axios("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
-    // setData(response.data)
+  // const response = await axios("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
+  // setData(response.data)
 
-    setData(currencyData);
+    setData(currencyArr);
   };
+
+  // update Context after fetch currency data for table
+  useEffect(() => {
+    setCurrencyData(currencyArr as CurrencyObj[])
+  }, [data])
 
   useEffect(() => {
     checkCounterAndFetch();
@@ -56,9 +63,9 @@ function CurrencyTable() {
           </div>
         </div>
         <div className="table-body">
-          {data.map(
+          {data?.filter(object => object.id !== '#').map(
             (value, index) => (
-              (<TableRow value={value} key={`row_${index}`} />)
+              <TableRow value={value} key={`row_${index}`} />
             )
           )}
         </div>

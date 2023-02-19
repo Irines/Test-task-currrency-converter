@@ -2,8 +2,10 @@ import TextField from "@mui/material/TextField";
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import './../styles/converter.sass';
 import MenuItem from "@mui/material/MenuItem";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
+import { CurrencyContext } from "../data-context";
 
 const currencies = [
     {
@@ -24,19 +26,7 @@ const currencies = [
     }
 ];
 
-interface currencyObj { 
-    ccy: string; 
-    base_ccy: string; 
-    buy: string; 
-    sale: string; 
-}
-
-const currencyData: currencyObj[] = [
-    { ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
-    { ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
-    { ccy: "UAH", base_ccy: "UAH", buy: "1", sale: "1" },
-    { ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" }
-];
+// const currencyData: CurrencyObj[] = [];
 
 function Converter() {
     const [amountValue, setAmountValue] = useState<string>('0')
@@ -44,6 +34,18 @@ function Converter() {
     const [currency, setCurrency] = useState('EUR')
     const [getCurrency, setGetCurrency] = useState('USD')
     const [isValid, setValid] = useState(true)
+    const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
+
+    useEffect(() => {
+
+    }, [])
+
+    useEffect(() => {
+        if (isValid && currencyData.length) {
+            let val = parseFloat(amountValue.replace(/,/g, '.'));
+            convertCurrency(currency, getCurrency, Number(val))
+        }
+    }, [currency, amountValue, getCurrency])
 
     const handleReverseCurrency = () => {
         setAmountValue(getValue)
@@ -51,13 +53,6 @@ function Converter() {
         setCurrency(getCurrency)
         setGetCurrency(currency)
     }
-
-    useEffect(() => {
-        if (isValid) {
-            let val = parseFloat(amountValue.replace(/,/g, '.'));
-            convertCurrency(currency, getCurrency, Number(val))
-        }
-    }, [currency, amountValue, getCurrency])
 
     const convertCurrency = (currency: string, getCurrency: string, amount: number) => {
         let computedValue = 0
@@ -137,9 +132,16 @@ function Converter() {
                     ))}
                 </TextField>
             </div>
-            <div className="icon-container" onClick={handleReverseCurrency}>
-                <SyncAltIcon sx={{ fontSize: 50, fill:"#95d0ff" }}/>
-            </div>
+            {
+                isValid ? 
+                <div className="icon-container" onClick={handleReverseCurrency}>
+                    <SyncAltIcon sx={{ fontSize: 50, fill:"#95d0ff" }}/>
+                </div>
+                :
+                <div className="icon-container">
+                    <SyncAltIcon sx={{ fontSize: 50, fill:"#ededed" }} style={{cursor: 'default'}}/>
+                </div>
+            }
             <div className="get input">
                 <TextField
                     id="outlined-name"

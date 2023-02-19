@@ -5,9 +5,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import {useState, useEffect} from 'react';
 import "../styles/currency-table.sass"
 import EditableField from "./EditableField";
+import { CurrencyObj } from "../interfaces/currency-data";
 
 interface RowData {
-    value: {ccy: string, base_ccy:string, buy:string, sale:string};
+    value: CurrencyObj;
     key: string;
 }
 
