@@ -13,21 +13,15 @@ const currencyArr = [
 ];
 
 function CurrencyTable() {
-  const [data, setData] = useState<CurrencyObj[]>([]);
   const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
 
-  // the server doesn't have CORS header, so you are not allowed to get the response
+  // the server doesn't have CORS header, so not allowed to get the response
   const fetchPost = async () => {
   // const response = await axios("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
-  // setData(response.data)
+  // setCurrencyData(response.data)
 
-    setData(currencyArr);
+    setCurrencyData(currencyArr);
   };
-
-  // update Context after fetch currency data for table
-  useEffect(() => {
-    setCurrencyData(currencyArr as CurrencyObj[])
-  }, [data])
 
   useEffect(() => {
     checkCounterAndFetch();
@@ -63,7 +57,7 @@ function CurrencyTable() {
           </div>
         </div>
         <div className="table-body">
-          {data?.filter(object => object.id !== '#').map(
+          {currencyData?.filter(object => object.id !== '#').map(
             (value, index) => (
               <TableRow value={value} key={`row_${index}`} />
             )

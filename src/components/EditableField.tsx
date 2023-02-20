@@ -2,19 +2,25 @@ import { TextField } from "@mui/material";
 import {ReactComponent as EditIcon} from "../assets/images/edit.svg";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useContext } from "react";
 import "../styles/currency-table.sass"
+import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
+import { CurrencyContext } from "../data-context";
+import { rounded } from "../globalFuncs";
 
 interface FieldProps {
-    value: string
+    value: string,
+    type: "sale" | "buy",
+    currencyRowObj: CurrencyObj
 }
 
-function EditableField({value} : FieldProps) {
+function EditableField({value, type, currencyRowObj} : FieldProps) {
         const [initialValue, setInitialValue] = useState(value)
         const [fieldValue, setFieldValue] = useState(value)
         const [showIcons, setShowIcons] = useState(false)
         const [showEdit, setShowEdit] = useState(false)
         const [valid, setValid] = useState(true)
+        const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
 
         useEffect(() => {
             setFieldValue(value);
@@ -25,6 +31,31 @@ function EditableField({value} : FieldProps) {
             const newVal = (e.target.value)
             validateInput(Number(newVal))
             setFieldValue(newVal)
+        }
+
+        const updateFieldData = () => {
+            let updatedRowObj: CurrencyObj = {
+                id: "",
+                ccy: "",
+                base_ccy: "",
+                buy: "",
+                sale: ""
+            }
+            switch (type) {
+                case "buy":
+                    updatedRowObj = {...currencyRowObj, "buy": fieldValue}
+                    break;
+                case "sale":
+                    updatedRowObj = {...currencyRowObj, "sale": fieldValue}
+                break;
+                default:
+                    break;
+            }
+            const updatedObjIndex = currencyData.indexOf(currencyRowObj);
+            let updatedArray = [...currencyData]
+            updatedArray.splice(updatedObjIndex, 1, updatedRowObj)
+            setCurrencyData(updatedArray)
+            setInitialValue(fieldValue)
         }
 
         const validateInput = (newVal: number) => {
@@ -44,6 +75,8 @@ function EditableField({value} : FieldProps) {
 
         const handleSubmit = () => {
             // request to server
+            updateFieldData()
+
             setShowIcons(false)
             setShowEdit(false)
         }
@@ -63,7 +96,7 @@ function EditableField({value} : FieldProps) {
                     id="outlined-name"
                     // label="Name"
                     autoComplete='off'
-                    value={fieldValue}
+                    value={rounded(fieldValue)}
                     onChange={handleChange}
                     onClick={handleFieldClick}
                     onMouseEnter={e => setShowEdit(!showIcons)}
@@ -90,7 +123,6 @@ function EditableField({value} : FieldProps) {
                     label="Must be +- 10%."
                     value={fieldValue}
                     onChange={handleChange}
-                    // helperText="Must be +- 10%."
               />
             }
             

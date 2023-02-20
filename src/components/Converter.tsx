@@ -6,6 +6,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
 import { CurrencyContext } from "../data-context";
+import { rounded } from "../globalFuncs";
 
 const currencies = [
     {
@@ -26,22 +27,16 @@ const currencies = [
     }
 ];
 
-// const currencyData: CurrencyObj[] = [];
-
 function Converter() {
-    const [amountValue, setAmountValue] = useState<string>('0')
-    const [getValue, setGetValue] = useState<string>('0')
+    const [amountValue, setAmountValue] = useState<string>('')
+    const [getValue, setGetValue] = useState<string>('')
     const [currency, setCurrency] = useState('EUR')
     const [getCurrency, setGetCurrency] = useState('USD')
     const [isValid, setValid] = useState(true)
     const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
 
     useEffect(() => {
-
-    }, [])
-
-    useEffect(() => {
-        if (isValid && currencyData.length) {
+        if (isValid && currencyData.length && amountValue) {
             let val = parseFloat(amountValue.replace(/,/g, '.'));
             convertCurrency(currency, getCurrency, Number(val))
         }
@@ -148,7 +143,7 @@ function Converter() {
                     label="Get"
                     disabled
                     autoComplete='off'
-                    value={getValue}
+                    value={rounded(getValue)}
                     onChange={handleChangeGet}
                 />
                 <TextField

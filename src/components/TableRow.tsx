@@ -1,7 +1,3 @@
-import { TextField } from "@mui/material";
-import {ReactComponent as EditIcon} from "../assets/images/edit.svg";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
 import {useState, useEffect} from 'react';
 import "../styles/currency-table.sass"
 import EditableField from "./EditableField";
@@ -21,7 +17,8 @@ function TableRow({value, key}:RowData) {
                     <div className="cell__content">
                         <EditableField 
                             value={value.buy} 
-                            // setFieldValue={setFieldValueBuy}
+                            type="buy"
+                            currencyRowObj={value}
                         />
                     </div>
                 </div>
@@ -29,7 +26,8 @@ function TableRow({value, key}:RowData) {
                     <div className="cell__content">
                         <EditableField 
                             value={value.sale}
-                            // setFieldValue={setFieldValueSell}
+                            type="sale"
+                            currencyRowObj={value}
                         />
                 </div>
             </div>

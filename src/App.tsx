@@ -1,11 +1,10 @@
 import React, { createContext, useMemo, useState } from "react";
-import logo from "./logo.svg";
 import "./App.sass";
 import Layout from "./components/Layout";
 import MainPage from "./components/MainPage";
 import { ErrorBoundary } from "react-error-boundary";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { CurrencyContextType, CurrencyObj } from "./interfaces/currency-data";
+import { CurrencyObj } from "./interfaces/currency-data";
 import { CurrencyContext } from "./data-context";
 
 function ErrorHandler({ error }: any) {
