@@ -4,7 +4,7 @@ import './../styles/converter.sass';
 import MenuItem from "@mui/material/MenuItem";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
+import { CurrencyContextType } from "../interfaces/currency-data";
 import { CurrencyContext } from "../data-context";
 import { rounded } from "../globalFuncs";
 

@@ -94,7 +94,6 @@ function EditableField({value, type, currencyRowObj} : FieldProps) {
                 <TextField
                     fullWidth 
                     id="outlined-name"
-                    // label="Name"
                     autoComplete='off'
                     value={rounded(fieldValue)}
                     onChange={handleChange}

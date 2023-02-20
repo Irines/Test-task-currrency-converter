@@ -4,6 +4,7 @@ import TableRow from "../components/TableRow";
 import axios from "axios";
 import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
 import { CurrencyContext } from "../data-context";
+import { formatDate } from "../globalFuncs";
 
 const currencyArr = [
   { id:"1", ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
@@ -46,7 +47,7 @@ function CurrencyTable() {
         <div className="table-header">
           <div className="row">
             <div className="cell hd-cell">
-              <div>Currency</div>
+              <div>Currency/{formatDate(new Date())}</div>
             </div>
             <div className="cell hd-cell">
               <div>Buy</div>

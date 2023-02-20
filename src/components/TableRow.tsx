@@ -5,13 +5,12 @@ import { CurrencyObj } from "../interfaces/currency-data";
 
 interface RowData {
     value: CurrencyObj;
-    key: string;
 }
 
-function TableRow({value, key}:RowData) {
+function TableRow({value}: RowData) {
 
     return (  
-        <div className="row" key={key}>
+        <div className="row">
             <div className="cell currency-col"><div>{`${value.ccy}/${value.base_ccy}`}</div></div>
                 <div className="cell">
                     <div className="cell__content">
