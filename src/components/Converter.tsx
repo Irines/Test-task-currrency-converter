@@ -40,10 +40,10 @@ function Converter() {
             let val = parseFloat(amountValue.replace(/,/g, '.'));
             convertCurrency(currency, getCurrency, Number(val))
         }
-    }, [currency, amountValue, getCurrency])
+    }, [currency, amountValue, getCurrency, currencyData])
 
     const handleReverseCurrency = () => {
-        setAmountValue(getValue)
+        setAmountValue(rounded(getValue))
         setGetValue(amountValue)
         setCurrency(getCurrency)
         setGetCurrency(currency)
