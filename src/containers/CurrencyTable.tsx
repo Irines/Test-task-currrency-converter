@@ -47,7 +47,10 @@ function CurrencyTable() {
         <div className="table-header">
           <div className="row">
             <div className="cell hd-cell">
-              <div>Currency/{formatDate(new Date())}</div>
+              <div className="date-cell">
+                <p>Currency</p>
+                <p>{formatDate(new Date())}</p>
+              </div>
             </div>
             <div className="cell hd-cell">
               <div>Buy</div>
