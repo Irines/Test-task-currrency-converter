@@ -7,19 +7,21 @@ import { CurrencyContext } from "../data-context";
 import { formatDate } from "../globalFuncs";
 
 const currencyArr = [
-  { id:"1", ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
-  { id:"2", ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
-  { id:"3", ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" },
-  { id:"#", ccy: "UAH", base_ccy: "UAH", buy: "1", sale: "1" },
+  { id: "1", ccy: "EUR", base_ccy: "UAH", buy: "41.15000", sale: "42.15000" },
+  { id: "2", ccy: "USD", base_ccy: "UAH", buy: "39.10000", sale: "39.60000" },
+  { id: "3", ccy: "BTC", base_ccy: "UAH", buy: "963001", sale: "976986" },
+  { id: "#", ccy: "UAH", base_ccy: "UAH", buy: "1", sale: "1" },
 ];
 
 function CurrencyTable() {
-  const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
+  const { currencyData, setCurrencyData } = useContext(
+    CurrencyContext
+  ) as CurrencyContextType;
 
   // the server doesn't have CORS header, so not allowed to get the response
   const fetchPost = async () => {
-  // const response = await axios("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
-  // setCurrencyData(response.data)
+    // const response = await axios("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5")
+    // setCurrencyData(response.data)
 
     setCurrencyData(currencyArr);
   };
@@ -39,7 +41,7 @@ function CurrencyTable() {
     } else {
       fetchPost();
     }
-  }
+  };
 
   return (
     <div className="table-container">
@@ -61,11 +63,11 @@ function CurrencyTable() {
           </div>
         </div>
         <div className="table-body">
-          {currencyData?.filter(object => object.id !== '#').map(
-            (value, index) => (
+          {currencyData
+            ?.filter((object) => object.id !== "#")
+            .map((value, index) => (
               <TableRow value={value} key={`row_${index}`} />
-            )
-          )}
+            ))}
         </div>
       </div>
     </div>
