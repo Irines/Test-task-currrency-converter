@@ -7,15 +7,18 @@ import userEvent from "@testing-library/user-event";
 
 
 describe("<Converter />", () => {
-
+    let container: HTMLDivElement
     //Runs a function before each of the tests in this file runs. If the function returns a promise or is a generator, Jest waits for that promise to resolve before running the test.
     beforeEach(() => {
-        render(<Converter />);
+      container = document.createElement('div');
+      document.body.appendChild(container);
+      ReactDOM.render(<Converter />, container);
     })
 
     //to clear everything at the end so that tests don't interrupt each other
     afterEach(() => {
-
+      document.body.removeChild(container);
+      container.remove();
     })
 
   test("Converter shapshot", () => {
@@ -26,23 +29,22 @@ describe("<Converter />", () => {
   test("Should allow reverse inputs to convert by default", () => {
     expect(screen.getByLabelText('Change')).toBeInTheDocument()
     expect(screen.getByLabelText('Get')).toBeInTheDocument()
-    let arrowsBtn = screen.getAllByTestId('reverse-button')[0]
+    const arrowsBtn = screen.getAllByTestId('reverse-button')[0]
     userEvent.click(arrowsBtn)
   });
 
   test("Should reverse currencies on arrows click when input is valid", async () => {
     expect(screen.getByDisplayValue('EUR')).toBeInTheDocument()
     expect(screen.getByDisplayValue('USD')).toBeInTheDocument()
-    let changeCurrency = screen.getByDisplayValue('EUR')
-    let getCurrency = screen.getByDisplayValue('USD')
-    let arrowsBtn = screen.getAllByTestId('reverse-button')[0]
+    const changeCurrency = screen.getByDisplayValue('EUR')
+    const getCurrency = screen.getByDisplayValue('USD')
+    const arrowsBtn = screen.getAllByTestId('reverse-button')[0]
     userEvent.type(screen.getByLabelText('Change'), '125,50')
-    expect(screen.getByLabelText('Change')).toHaveValue('125,50');
+    expect(screen.getByLabelText('Change')).toHaveValue('125,50')
     expect(screen.queryByLabelText('Enter only numbers and comma/dot')).not.toBeInTheDocument()
     userEvent.click(arrowsBtn)
     expect(changeCurrency).toHaveValue("USD")
     expect(getCurrency).toHaveValue("EUR")
-    screen.debug()
   });
 
   test("Field amount to convert should be invalid when enter string", () => {
