@@ -1,13 +1,13 @@
 import { TextField } from "@mui/material";
-import { ReactComponent as EditIcon } from "../../assets/images/edit.svg";
+import { ReactComponent as EditIcon } from "../assets/images/edit.svg";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useState, useEffect, ChangeEvent, useContext } from "react";
-import "../../styles/currency-table.sass";
+import "../styles/currency-table.sass";
 import { CurrencyContextType, CurrencyObj } from "../interfaces/currency-data";
 import { CurrencyContext } from "../data-context";
 import { rounded } from "../globalFuncs";
-import { validateInput } from "../tests/validateInput";
+import { validateInput } from "../validateInput";
 
 interface FieldProps {
   value: string;

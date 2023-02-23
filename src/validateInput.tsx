@@ -6,4 +6,4 @@ export const validateInput = (newVal: number, initialValue: number) => {
     }
 }
 
-module.exports = { validateInput }
+// module.exports = { validateInput }

@@ -7,6 +7,7 @@ import axios from "axios";
 import { CurrencyContextType } from "../interfaces/currency-data";
 import { CurrencyContext } from "../data-context";
 import { rounded } from "../globalFuncs";
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 const currencies = [
   {
@@ -33,22 +34,19 @@ function Converter() {
   const [currency, setCurrency] = useState("EUR");
   const [getCurrency, setGetCurrency] = useState("USD");
   const [isValid, setValid] = useState(true);
-  const { currencyData, setCurrencyData } = useContext(
-    CurrencyContext
-  ) as CurrencyContextType;
+  const { currencyData, setCurrencyData } = useContext(CurrencyContext) as CurrencyContextType;
 
   useEffect(() => {
     if (isValid && currencyData.length && amountValue) {
       let val = parseFloat(amountValue.replace(/,/g, "."));
-      convertCurrency(currency, getCurrency, Number(val));
+      let computed = convertCurrency(currency, getCurrency, Number(val));
+      setGetValue(String(computed));
     }
   }, [currency, amountValue, getCurrency, currencyData]);
 
   const handleReverseCurrency = () => {
-    setAmountValue(rounded(getValue));
-    setGetValue(amountValue);
-    setCurrency(getCurrency);
-    setGetCurrency(currency);
+    setCurrency(getCurrency)
+    setGetCurrency(currency)
   };
 
   const convertCurrency = (
@@ -69,7 +67,7 @@ function Converter() {
           currencyData.filter((value) => value.ccy === getCurrency)[0].sale
         );
     }
-    setGetValue(String(computedValue.toFixed(5)));
+    return computedValue;
   };
 
   const handleChangeAmount = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -103,7 +101,7 @@ function Converter() {
   };
 
   return (
-    <div className="converter-container">
+    <div className="converter-container" data-testid="converter-component">
       <div className="change input">
         {isValid ? (
           <TextField
@@ -124,6 +122,7 @@ function Converter() {
           />
         )}
         <TextField
+          data-testid="select-change"
           id="outlined-select-currency"
           select
           label="Select"
@@ -139,11 +138,11 @@ function Converter() {
         </TextField>
       </div>
       {isValid ? (
-        <div className="icon-container" onClick={handleReverseCurrency}>
+        <div className="icon-container" data-testid='reverse-button' onClick={handleReverseCurrency}>
           <SyncAltIcon sx={{ fontSize: 50, fill: "#95d0ff" }} />
         </div>
       ) : (
-        <div className="icon-container">
+        <div className="icon-container disabled" data-testid='reverse-button'>
           <SyncAltIcon
             sx={{ fontSize: 50, fill: "#ededed" }}
             style={{ cursor: "default" }}
@@ -160,10 +159,11 @@ function Converter() {
           onChange={handleChangeGet}
         />
         <TextField
+          data-testid="select-get"
           id="outlined-select-currency"
           select
           label="Select"
-          defaultValue="EUR"
+          defaultValue="USD"
           value={getCurrency}
           onChange={handleChangeGetCurrency}
         >
